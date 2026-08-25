@@ -1,0 +1,128 @@
+{
+  "name": "Wazuh-SOAR-Automated-Threat-Response",
+  "description": "Orchestrates threat detection intake from Wazuh SIEM, enriches via VirusTotal, and initiates automated active-response containment.",
+  "sharing": "private",
+  "version": "1.2.0",
+  "author": "Omar Khaled & Mohamed Sabry",
+  "triggers": [
+    {
+      "id": "wazuh_webhook_inbound",
+      "name": "Wazuh Inbound Webhook",
+      "type": "webhook",
+      "status": "enabled",
+      "configuration": {
+        "path": "/api/v1/hooks/webhook_wazuh_alerts",
+        "method": "POST"
+      }
+    }
+  ],
+  "actions": [
+    {
+      "id": "action_parse_alert",
+      "name": "Parse Wazuh Alert Payload",
+      "app_name": "Shuffle Tools",
+      "app_version": "1.0.0",
+      "action": "parse_json",
+      "parameters": [
+        {
+          "name": "input_data",
+          "value": "$wazuh_webhook_inbound.data"
+        }
+      ]
+    },
+    {
+      "id": "action_branch_decision",
+      "name": "Evaluate Detection Rule ID",
+      "app_name": "Shuffle Tools",
+      "app_version": "1.0.0",
+      "action": "branch",
+      "parameters": [
+        {
+          "name": "condition",
+          "value": "$action_parse_alert.rule.id == '5763' ? 'SSH_CONTAIN' : ($action_parse_alert.rule.id == '91837' ? 'POWERSHELL_CONTAIN' : 'C2_CONTAIN')"
+        }
+      ]
+    },
+    {
+      "id": "action_virustotal_enrich",
+      "name": "Query VirusTotal Threat Intel",
+      "app_name": "VirusTotal v3",
+      "app_version": "1.1.0",
+      "action": "get_ip_report",
+      "parameters": [
+        {
+          "name": "ip_address",
+          "value": "$action_parse_alert.data.srcip"
+        },
+        {
+          "name": "apikey",
+          "value": "${VIRUSTOTAL_API_KEY}"
+        }
+      ]
+    },
+    {
+      "id": "action_wazuh_jwt_auth",
+      "name": "Authenticate Wazuh REST API",
+      "app_name": "HTTP Request",
+      "app_version": "1.0.0",
+      "action": "post",
+      "parameters": [
+        {
+          "name": "url",
+          "value": "https://100.64.0.10:55000/security/user/authenticate"
+        },
+        {
+          "name": "headers",
+          "value": "{\"Content-Type\": \"application/json\"}"
+        },
+        {
+          "name": "auth",
+          "value": "Basic: ${WAZUH_API_CREDENTIALS}"
+        }
+      ]
+    },
+    {
+      "id": "action_wazuh_trigger_ar",
+      "name": "Execute Active Response Containment",
+      "app_name": "HTTP Request",
+      "app_version": "1.0.0",
+      "action": "put",
+      "parameters": [
+        {
+          "name": "url",
+          "value": "https://100.64.0.10:55000/active-response"
+        },
+        {
+          "name": "headers",
+          "value": "{\"Authorization\": \"Bearer $action_wazuh_jwt_auth.data.token\", \"Content-Type\": \"application/json\"}"
+        },
+        {
+          "name": "body",
+          "value": "{\"command\": \"firewall-drop0\", \"custom\": false, \"agent_list\": [\"$action_parse_alert.agent.id\"], \"arguments\": [\"-$action_parse_alert.data.srcip\"]}"
+        }
+      ]
+    }
+  ],
+  "branches": [
+    {
+      "source": "wazuh_webhook_inbound",
+      "destination": "action_parse_alert"
+    },
+    {
+      "source": "action_parse_alert",
+      "destination": "action_branch_decision"
+    },
+    {
+      "source": "action_branch_decision",
+      "destination": "action_virustotal_enrich"
+    },
+    {
+      "source": "action_branch_decision",
+      "destination": "action_wazuh_jwt_auth"
+    },
+    {
+      "source": "action_wazuh_jwt_auth",
+      "destination": "action_wazuh_trigger_ar"
+    }
+  ]
+}

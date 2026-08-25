@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 380" width="100%" height="380" style="background:#090d16; border-radius:12px; font-family:'Courier New', Consolas, Monaco, monospace;">
+  <defs>
+    <linearGradient id="term-header" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+  </defs>
+
+  <style>
+    .prompt { fill: #10b981; font-weight: bold; }
+    .cmd { fill: #f8fafc; }
+    .alert-tag { fill: #ef4444; font-weight: bold; }
+    .warn-tag { fill: #f59e0b; font-weight: bold; }
+    .info-tag { fill: #06b6d4; font-weight: bold; }
+    .soar-tag { fill: #c084fc; font-weight: bold; }
+    .success-tag { fill: #10b981; font-weight: bold; }
+    .dim { fill: #64748b; }
+    .cursor { animation: blink 1s infinite; }
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+  </style>
+
+  <!-- Terminal Window Chrome -->
+  <rect width="920" height="380" fill="#0b0f19" rx="10" stroke="#1e293b" stroke-width="1.5" />
+  
+  <!-- Header Bar -->
+  <rect width="920" height="38" fill="url(#term-header)" rx="10" />
+  <rect y="28" width="920" height="10" fill="#0f172a" />
+  <line x1="0" y1="38" x2="920" y2="38" stroke="#1e293b" stroke-width="1" />
+
+  <!-- Window Controls -->
+  <circle cx="24" cy="19" r="6" fill="#ef4444" />
+  <circle cx="44" cy="19" r="6" fill="#f59e0b" />
+  <circle cx="64" cy="19" r="6" fill="#10b981" />
+
+  <!-- Terminal Title -->
+  <text x="460" y="24" fill="#94a3b8" font-size="12" font-weight="600" text-anchor="middle" font-family="'Segoe UI', sans-serif">
+    root@wazuh-manager-soc:~ [Tailnet Mesh: 100.64.0.10]
+  </text>
+
+  <!-- Terminal Body Content -->
+  <g transform="translate(24, 65)" font-size="12" letter-spacing="0.3">
+    <!-- Line 1: Tailscale Mesh Health -->
+    <text y="0">
+      <tspan class="prompt">soc-analyst@wazuh:~$</tspan>
+      <tspan class="cmd"> tailscale status --json | jq '.Peer[] | {HostName, TailscaleIPs, Online}'</tspan>
+    </text>
+    <text y="20" class="dim">
+      [✓] 5/5 Mesh nodes online: [wazuh-mgr:100.64.0.10, ubuntu-victim:100.64.0.11, win11-karim:100.64.0.12, win-srv-bushnak:100.64.0.13, shuffle-soar:100.64.0.14]
+    </text>
+
+    <!-- Line 2: Detection Event -->
+    <text y="48">
+      <tspan class="info-tag">[18:24:02]</tspan>
+      <tspan class="alert-tag"> [ALERT - RULE 5763 - LEVEL 10]</tspan>
+      <tspan fill="#f1f5f9"> sshd: Maximum authentication attempts exceeded</tspan>
+    </text>
+    <text y="68" fill="#94a3b8">
+      │  ├─ Agent: <tspan fill="#38bdf8">002 (mohamedmassoud - Ubuntu 24.04)</tspan> │ Target IP: <tspan fill="#cbd5e1">100.64.0.11</tspan>
+    </text>
+    <text y="86" fill="#94a3b8">
+      │  ├─ Attacker Source IP: <tspan fill="#f87171">192.168.1.105 (Hydra Dictionary Attack)</tspan>
+    </text>
+
+    <!-- Line 3: SOAR Webhook Dispatched -->
+    <text y="114">
+      <tspan class="info-tag">[18:24:02.410]</tspan>
+      <tspan class="soar-tag"> [SOAR WEBHOOK]</tspan>
+      <tspan fill="#cbd5e1"> ossec-integrator: POST payload to Shuffle @ </tspan>
+      <tspan fill="#a855f7">http://100.64.0.14:3001/api/v1/hooks/wazuh_hook</tspan>
+    </text>
+
+    <!-- Line 4: Shuffle SOAR Execution -->
+    <text y="142">
+      <tspan class="info-tag">[18:24:02.850]</tspan>
+      <tspan class="soar-tag"> [SHUFFLE PLAYBOOK]</tspan>
+      <tspan fill="#f1f5f9"> Workflow 'SOC-Auto-Containment' triggered (Exec ID: <tspan fill="#38bdf8">sh-exec-9014</tspan>)</tspan>
+    </text>
+    <text y="162" fill="#94a3b8">
+      │  ├─ Branch Filter: <tspan fill="#facc15">Rule 5763 == True</tspan> ➔ Route: <tspan fill="#38bdf8">Wazuh Active-Response API</tspan>
+    </text>
+    <text y="180" fill="#94a3b8">
+      │  ├─ Intel Query: <tspan fill="#34d399">VirusTotal API v3</tspan> ➔ Attacker Subnet Reputation Checked
+    </text>
+    <text y="198" fill="#94a3b8">
+      │  └─ JWT Session: <tspan fill="#38bdf8">Authenticated Wazuh API Token generated (Bearer eyJhbGci...)</tspan>
+    </text>
+
+    <!-- Line 5: Active Response Mitigation -->
+    <text y="226">
+      <tspan class="info-tag">[18:24:03.220]</tspan>
+      <tspan class="success-tag"> [ACTIVE RESPONSE TRIGGERED]</tspan>
+      <tspan fill="#f1f5f9"> Command: </tspan>
+      <tspan fill="#f87171">firewall-drop.sh add 192.168.1.105</tspan>
+    </text>
+    <text y="246" fill="#94a3b8">
+      │  └─ Execution Target: Agent 002 (Ubuntu) ➔ <tspan fill="#10b981">iptables -I INPUT -s 192.168.1.105 -j DROP</tspan>
+    </text>
+
+    <!-- Line 6: Verification & Complete -->
+    <text y="274">
+      <tspan class="info-tag">[18:24:03.680]</tspan>
+      <tspan class="success-tag"> [STATUS: CONTAINED]</tspan>
+      <tspan fill="#4ade80"> Threat neutralized in 1.27s. Host mohamedmassoud isolated from attacker.</tspan>
+    </text>
+
+    <!-- Cursor Prompt -->
+    <text y="302">
+      <tspan class="prompt">soc-analyst@wazuh:~$</tspan>
+      <tspan fill="#38bdf8"> _</tspan><rect x="182" y="290" width="8" height="14" fill="#38bdf8" class="cursor" />
+    </text>
+  </g>
+</svg>

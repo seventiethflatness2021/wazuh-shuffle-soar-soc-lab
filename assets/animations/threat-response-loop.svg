@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 200" width="100%" height="200" style="background:#090d16; border-radius:12px; font-family:'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;">
+  <defs>
+    <linearGradient id="step-bg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+
+    <linearGradient id="line-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ef4444" />
+      <stop offset="25%" stop-color="#f59e0b" />
+      <stop offset="50%" stop-color="#3b82f6" />
+      <stop offset="75%" stop-color="#a855f7" />
+      <stop offset="100%" stop-color="#10b981" />
+    </linearGradient>
+
+    <filter id="badge-glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <style>
+    .step-box { transition: all 0.3s ease; }
+    .pulse-dot { animation: pulse 2s infinite ease-in-out; }
+    .travel-dot { fill: #ffffff; filter: drop-shadow(0 0 5px #38bdf8); }
+    @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.9); } }
+  </style>
+
+  <!-- Background -->
+  <rect width="920" height="200" fill="#090d16" rx="12" />
+  <rect x="8" y="8" width="904" height="184" rx="10" fill="none" stroke="#1e293b" stroke-width="1" />
+
+  <!-- Connecting Rail -->
+  <line x1="80" y1="100" x2="840" y2="100" stroke="url(#line-grad)" stroke-width="3" stroke-linecap="round" />
+  
+  <!-- Traveling Packet -->
+  <circle r="4.5" class="travel-dot">
+    <animate attributeName="cx" values="80; 230; 380; 530; 680; 830; 80" dur="6s" repeatCount="indefinite" />
+    <animate attributeName="cy" values="100; 100; 100; 100; 100; 100; 100" dur="6s" repeatCount="indefinite" />
+  </circle>
+
+  <!-- Step 1: Attack -->
+  <g transform="translate(40, 45)">
+    <rect width="105" height="110" rx="8" fill="url(#step-bg)" stroke="#ef4444" stroke-width="1.5" />
+    <circle cx="52" cy="0" r="16" fill="#ef4444" />
+    <text x="52" y="5" fill="#ffffff" font-size="12" font-weight="800" text-anchor="middle">01</text>
+    <text x="52" y="38" fill="#fca5a5" font-size="11" font-weight="700" text-anchor="middle">ATTACK</text>
+    <text x="52" y="56" fill="#94a3b8" font-size="9" text-anchor="middle">Hydra / SSH</text>
+    <text x="52" y="70" fill="#94a3b8" font-size="9" text-anchor="middle">PowerShell IEX</text>
+    <text x="52" y="84" fill="#94a3b8" font-size="9" text-anchor="middle">PsExec C2</text>
+  </g>
+
+  <!-- Step 2: Detection -->
+  <g transform="translate(190, 45)">
+    <rect width="105" height="110" rx="8" fill="url(#step-bg)" stroke="#f59e0b" stroke-width="1.5" />
+    <circle cx="52" cy="0" r="16" fill="#f59e0b" />
+    <text x="52" y="5" fill="#ffffff" font-size="12" font-weight="800" text-anchor="middle">02</text>
+    <text x="52" y="38" fill="#fcd34d" font-size="11" font-weight="700" text-anchor="middle">DETECTION</text>
+    <text x="52" y="56" fill="#94a3b8" font-size="9" text-anchor="middle">Wazuh Rules</text>
+    <text x="52" y="70" fill="#94a3b8" font-size="9" text-anchor="middle">5763 / 91837</text>
+    <text x="52" y="84" fill="#94a3b8" font-size="9" text-anchor="middle">92650 (Lvl 12)</text>
+  </g>
+
+  <!-- Step 3: Webhook -->
+  <g transform="translate(340, 45)">
+    <rect width="105" height="110" rx="8" fill="url(#step-bg)" stroke="#3b82f6" stroke-width="1.5" />
+    <circle cx="52" cy="0" r="16" fill="#3b82f6" />
+    <text x="52" y="5" fill="#ffffff" font-size="12" font-weight="800" text-anchor="middle">03</text>
+    <text x="52" y="38" fill="#93c5fd" font-size="11" font-weight="700" text-anchor="middle">WEBHOOK</text>
+    <text x="52" y="56" fill="#94a3b8" font-size="9" text-anchor="middle">ossec.conf Hook</text>
+    <text x="52" y="70" fill="#94a3b8" font-size="9" text-anchor="middle">JSON Payload</text>
+    <text x="52" y="84" fill="#94a3b8" font-size="9" text-anchor="middle">Tailnet Flat IP</text>
+  </g>
+
+  <!-- Step 4: SOAR Routing -->
+  <g transform="translate(490, 45)">
+    <rect width="105" height="110" rx="8" fill="url(#step-bg)" stroke="#8b5cf6" stroke-width="1.5" />
+    <circle cx="52" cy="0" r="16" fill="#8b5cf6" />
+    <text x="52" y="5" fill="#ffffff" font-size="12" font-weight="800" text-anchor="middle">04</text>
+    <text x="52" y="38" fill="#c4b5fd" font-size="11" font-weight="700" text-anchor="middle">SOAR LOGIC</text>
+    <text x="52" y="56" fill="#94a3b8" font-size="9" text-anchor="middle">Shuffle Engine</text>
+    <text x="52" y="70" fill="#94a3b8" font-size="9" text-anchor="middle">Rule Filtering</text>
+    <text x="52" y="84" fill="#94a3b8" font-size="9" text-anchor="middle">Branch Decisions</text>
+  </g>
+
+  <!-- Step 5: Intel Enrichment -->
+  <g transform="translate(640, 45)">
+    <rect width="105" height="110" rx="8" fill="url(#step-bg)" stroke="#ec4899" stroke-width="1.5" />
+    <circle cx="52" cy="0" r="16" fill="#ec4899" />
+    <text x="52" y="5" fill="#ffffff" font-size="12" font-weight="800" text-anchor="middle">05</text>
+    <text x="52" y="38" fill="#f472b6" font-size="11" font-weight="700" text-anchor="middle">INTEL LOOKUP</text>
+    <text x="52" y="56" fill="#94a3b8" font-size="9" text-anchor="middle">VirusTotal API</text>
+    <text x="52" y="70" fill="#94a3b8" font-size="9" text-anchor="middle">IP/Hash Triage</text>
+    <text x="52" y="84" fill="#94a3b8" font-size="9" text-anchor="middle">Context Added</text>
+  </g>
+
+  <!-- Step 6: Active Response -->
+  <g transform="translate(790, 45)">
+    <rect width="105" height="110" rx="8" fill="url(#step-bg)" stroke="#10b981" stroke-width="1.5" />
+    <circle cx="52" cy="0" r="16" fill="#10b981" />
+    <text x="52" y="5" fill="#ffffff" font-size="12" font-weight="800" text-anchor="middle">06</text>
+    <text x="52" y="38" fill="#6ee7b7" font-size="11" font-weight="700" text-anchor="middle">CONTAINMENT</text>
+    <text x="52" y="56" fill="#94a3b8" font-size="9" text-anchor="middle">Rule 651/657</text>
+    <text x="52" y="70" fill="#94a3b8" font-size="9" text-anchor="middle">Firewall-Drop</text>
+    <text x="52" y="84" fill="#94a3b8" font-size="9" text-anchor="middle">Netsh Isolation</text>
+  </g>
+</svg>

@@ -1,0 +1,99 @@
+<!--
+  Wazuh - Custom Local Ruleset
+  SOC Automation Lab: Wazuh SIEM + Shuffle SOAR + Tailscale Mesh
+  Author: Mohamed Sabry (@0xsabry)
+-->
+<group name="local,syslog,sshd,windows,powershell,">
+
+  <!-- ======================================================== -->
+  <!-- 1. SSH BRUTE-FORCE CORRELATION (Ubuntu Target: Massoud)  -->
+  <!-- ======================================================== -->
+  <rule id="100001" level="6">
+    <if_sid>5710</if_sid>
+    <description>sshd: SSH authentication failure attempt recorded.</description>
+    <mitre>
+      <id>T1110.001</id>
+    </mitre>
+    <group>authentication_failed,pci_dss_10.2.4,pci_dss_10.2.5,</group>
+  </rule>
+
+  <rule id="100002" level="10" frequency="6" timeframe="120">
+    <if_matched_sid>100001</if_matched_sid>
+    <same_source_ip />
+    <description>sshd: Multiple SSH authentication failures detected from single source IP (Hydra Brute-Force).</description>
+    <mitre>
+      <id>T1110.001</id>
+      <id>T1110.003</id>
+    </mitre>
+    <group>authentication_failures,bruteforce,</group>
+  </rule>
+
+  <!-- Trigger Active Response Rule 651 (firewall-drop) on repeated failures -->
+  <rule id="5763" level="10" frequency="8" timeframe="120">
+    <if_matched_sid>5710</if_matched_sid>
+    <same_source_ip />
+    <description>sshd: Maximum authentication attempts exceeded - Host brute-force threshold reached.</description>
+    <mitre>
+      <id>T1110.001</id>
+    </mitre>
+    <group>authentication_failures,bruteforce,</group>
+  </rule>
+
+  <!-- ======================================================== -->
+  <!-- 2. SUSPICIOUS POWERSHELL EXECUTION (Windows Target: Karim)-->
+  <!-- ======================================================== -->
+  <rule id="91837" level="12">
+    <if_group>windows</if_group>
+    <match>Invoke-Expression|IEX|DownloadString|ExecutionPolicy Bypass|-EncodedCommand|Get-Content -Stream</match>
+    <description>Windows: Suspicious PowerShell execution cradle or execution policy bypass detected.</description>
+    <mitre>
+      <id>T1059.001</id>
+      <id>T1562.001</id>
+      <id>T1105</id>
+    </mitre>
+    <group>powershell,execution,defense_evasion,</group>
+  </rule>
+
+  <rule id="67027" level="10">
+    <if_group>windows</if_group>
+    <match>powershell.exe -ExecutionPolicy Bypass|powershell.exe -nop -w hidden</match>
+    <description>Windows: Hidden or unconstrained PowerShell process spawned by suspicious parent.</description>
+    <mitre>
+      <id>T1059.001</id>
+      <id>T1027</id>
+    </mitre>
+    <group>process_creation,execution,</group>
+  </rule>
+
+  <!-- ======================================================== -->
+  <!-- 3. COMMAND & CONTROL / SERVICE CREATION (Target: Bushnak) -->
+  <!-- ======================================================== -->
+  <rule id="92650" level="12">
+    <if_group>windows</if_group>
+    <match>EventID: 7045|New Service Was Installed</match>
+    <description>Windows Server: New service created dynamically (Potential PsExec / Lateral Movement / C2 Persistence).</description>
+    <mitre>
+      <id>T1543.003</id>
+      <id>T1021.002</id>
+    </mitre>
+    <group>persistence,privilege_escalation,service_creation,</group>
+  </rule>
+
+  <!-- ======================================================== -->
+  <!-- 4. ACTIVE RESPONSE ESCALATION LOG RULES                  -->
+  <!-- ======================================================== -->
+  <rule id="651" level="3">
+    <if_group>active_response</if_group>
+    <match>firewall-drop</match>
+    <description>Active Response: firewall-drop triggered - Attacker IP blocked via iptables.</description>
+    <group>active_response,</group>
+  </rule>
+
+  <rule id="657" level="3">
+    <if_group>active_response</if_group>
+    <match>netsh</match>
+    <description>Active Response: netsh isolation executed - Host/Service network access blocked.</description>
+    <group>active_response,</group>
+  </rule>
+
+</group>

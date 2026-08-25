@@ -1,0 +1,28 @@
+# OS Metadata
+.DS_Store
+Thumbs.db
+desktop.ini
+*.tmp
+*.bak
+
+# Virtual Environments & Python Cache
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+env/
+venv/
+
+# IDE / Editor Files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Sensitive Logs / Passwords (Sanitized only in repo)
+*.passwords
+*.key
+*.cert
+!sslmanager.cert.example
+secrets.env
+.env

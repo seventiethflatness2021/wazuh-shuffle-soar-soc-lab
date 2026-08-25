@@ -1,0 +1,140 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 320" width="100%" height="320" style="background:#090d16; border-radius:12px; font-family:'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;">
+  <defs>
+    <!-- Gradients -->
+    <linearGradient id="bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#080c14" />
+      <stop offset="50%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#0a101d" />
+    </linearGradient>
+    
+    <linearGradient id="cyan-glow" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#06b6d4" />
+      <stop offset="50%" stop-color="#3b82f6" />
+      <stop offset="100%" stop-color="#8b5cf6" />
+    </linearGradient>
+
+    <linearGradient id="accent-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#10b981" />
+      <stop offset="100%" stop-color="#06b6d4" />
+    </linearGradient>
+
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="4" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+
+    <pattern id="cyber-grid" width="30" height="30" patternUnits="userSpaceOnUse">
+      <path d="M 30 0 L 0 0 0 30" fill="none" stroke="#1e293b" stroke-width="0.6" stroke-opacity="0.6" />
+      <circle cx="30" cy="0" r="1" fill="#06b6d4" fill-opacity="0.3" />
+    </pattern>
+
+    <linearGradient id="scan-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#06b6d4" stop-opacity="0" />
+      <stop offset="50%" stop-color="#06b6d4" stop-opacity="0.3" />
+      <stop offset="100%" stop-color="#06b6d4" stop-opacity="0" />
+    </linearGradient>
+  </defs>
+
+  <style>
+    .glow-text { filter: drop-shadow(0 0 8px rgba(6, 182, 212, 0.6)); }
+    .pulse-dot { animation: pulse 2s infinite ease-in-out; }
+    .radar-sweep { transform-origin: 820px 80px; animation: rotate 6s linear infinite; }
+    .scan-bar { animation: scan 4s ease-in-out infinite; }
+    .tag-glow { filter: drop-shadow(0 0 4px rgba(16, 185, 129, 0.4)); }
+    @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.9); } }
+    @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    @keyframes scan { 0% { transform: translateY(-50px); opacity: 0; } 50% { opacity: 0.8; } 100% { transform: translateY(320px); opacity: 0; } }
+  </style>
+
+  <!-- Background -->
+  <rect width="920" height="320" fill="url(#bg-grad)" rx="12" />
+  <rect width="920" height="320" fill="url(#cyber-grid)" rx="12" />
+
+  <!-- Animated Scanner Bar -->
+  <rect class="scan-bar" x="0" y="0" width="920" height="30" fill="url(#scan-grad)" pointer-events="none" />
+
+  <!-- Outer Border & Cyber Accents -->
+  <rect x="8" y="8" width="904" height="304" rx="10" fill="none" stroke="#1e293b" stroke-width="1" />
+  <rect x="8" y="8" width="904" height="304" rx="10" fill="none" stroke="#06b6d4" stroke-width="1" stroke-opacity="0.3" stroke-dasharray="20 80" />
+
+  <!-- Corner Brackets -->
+  <path d="M 16 36 L 16 16 L 36 16" fill="none" stroke="#06b6d4" stroke-width="2.5" />
+  <path d="M 904 36 L 904 16 L 884 16" fill="none" stroke="#06b6d4" stroke-width="2.5" />
+  <path d="M 16 284 L 16 304 L 36 304" fill="none" stroke="#06b6d4" stroke-width="2.5" />
+  <path d="M 904 284 L 904 304 L 884 304" fill="none" stroke="#06b6d4" stroke-width="2.5" />
+
+  <!-- Radar Graphic -->
+  <g opacity="0.4">
+    <circle cx="820" cy="90" r="50" fill="none" stroke="#06b6d4" stroke-width="1" stroke-opacity="0.4" />
+    <circle cx="820" cy="90" r="35" fill="none" stroke="#06b6d4" stroke-width="1" stroke-opacity="0.3" stroke-dasharray="4 4" />
+    <circle cx="820" cy="90" r="20" fill="none" stroke="#06b6d4" stroke-width="1" stroke-opacity="0.4" />
+    <line x1="760" y1="90" x2="880" y2="90" stroke="#06b6d4" stroke-width="0.8" stroke-opacity="0.3" />
+    <line x1="820" y1="30" x2="820" y2="150" stroke="#06b6d4" stroke-width="0.8" stroke-opacity="0.3" />
+    <g class="radar-sweep">
+      <line x1="820" y1="90" x2="820" y2="40" stroke="#10b981" stroke-width="2" filter="url(#glow)" />
+      <polygon points="820,90 820,40 855,55" fill="#10b981" fill-opacity="0.15" />
+    </g>
+    <circle cx="845" cy="70" r="3" fill="#ef4444" class="pulse-dot" />
+    <circle cx="800" cy="110" r="2.5" fill="#06b6d4" class="pulse-dot" />
+  </g>
+
+  <!-- Live Status Indicators -->
+  <g transform="translate(40, 36)">
+    <rect x="0" y="0" width="135" height="24" rx="12" fill="#0f172a" stroke="#1e293b" stroke-width="1" />
+    <circle cx="14" cy="12" r="4" fill="#10b981" class="pulse-dot" />
+    <text x="26" y="16" fill="#10b981" font-size="11" font-weight="700" letter-spacing="0.5">SOC LAB ACTIVE</text>
+
+    <rect x="145" y="0" width="145" height="24" rx="12" fill="#0f172a" stroke="#1e293b" stroke-width="1" />
+    <circle cx="159" cy="12" r="4" fill="#06b6d4" class="pulse-dot" />
+    <text x="171" y="16" fill="#38bdf8" font-size="11" font-weight="600" letter-spacing="0.5">TAILNET 100.X MESH</text>
+
+    <rect x="300" y="0" width="145" height="24" rx="12" fill="#0f172a" stroke="#1e293b" stroke-width="1" />
+    <circle cx="314" cy="12" r="4" fill="#a855f7" class="pulse-dot" />
+    <text x="326" y="16" fill="#c084fc" font-size="11" font-weight="600" letter-spacing="0.5">SHUFFLE SOAR AUTO</text>
+  </g>
+
+  <!-- Title & Subtitle -->
+  <text x="40" y="120" fill="#ffffff" font-size="32" font-weight="800" letter-spacing="-0.5" class="glow-text">
+    AUTOMATED SOC &amp; SOAR LAB
+  </text>
+  
+  <text x="40" y="156" fill="url(#cyan-glow)" font-size="18" font-weight="700" letter-spacing="0.5">
+    Wazuh SIEM  <tspan fill="#64748b">·</tspan>  Shuffle SOAR  <tspan fill="#64748b">·</tspan>  Tailscale Mesh  <tspan fill="#64748b">·</tspan>  VirusTotal API
+  </text>
+
+  <text x="40" y="190" fill="#94a3b8" font-size="13.5" font-weight="400" letter-spacing="0.2">
+    Distributed 5-node security operations lab with real-time attack simulation, automated enrichment,
+  </text>
+  <text x="40" y="210" fill="#94a3b8" font-size="13.5" font-weight="400" letter-spacing="0.2">
+    webhook orchestration, and bi-directional active containment across Linux &amp; Windows endpoints.
+  </text>
+
+  <!-- Feature Badges -->
+  <g transform="translate(40, 245)">
+    <!-- Badge 1 -->
+    <g transform="translate(0, 0)">
+      <rect x="0" y="0" width="155" height="34" rx="6" fill="#0f172a" stroke="#0284c7" stroke-width="1" stroke-opacity="0.6" />
+      <text x="12" y="21" fill="#38bdf8" font-size="12" font-weight="700">⚡ Wazuh SIEM v4.14</text>
+    </g>
+    <!-- Badge 2 -->
+    <g transform="translate(165, 0)">
+      <rect x="0" y="0" width="150" height="34" rx="6" fill="#0f172a" stroke="#9333ea" stroke-width="1" stroke-opacity="0.6" />
+      <text x="12" y="21" fill="#c084fc" font-size="12" font-weight="700">🔄 Shuffle SOAR CI/CD</text>
+    </g>
+    <!-- Badge 3 -->
+    <g transform="translate(325, 0)">
+      <rect x="0" y="0" width="155" height="34" rx="6" fill="#0f172a" stroke="#16a34a" stroke-width="1" stroke-opacity="0.6" />
+      <text x="12" y="21" fill="#4ade80" font-size="12" font-weight="700">🛡️ Active Containment</text>
+    </g>
+    <!-- Badge 4 -->
+    <g transform="translate(490, 0)">
+      <rect x="0" y="0" width="165" height="34" rx="6" fill="#0f172a" stroke="#ea580c" stroke-width="1" stroke-opacity="0.6" />
+      <text x="12" y="21" fill="#fb923c" font-size="12" font-weight="700">🎯 MITRE ATT&amp;CK Mapped</text>
+    </g>
+    <!-- Badge 5 -->
+    <g transform="translate(665, 0)">
+      <rect x="0" y="0" width="145" height="34" rx="6" fill="#0f172a" stroke="#64748b" stroke-width="1" stroke-opacity="0.6" />
+      <text x="12" y="21" fill="#cbd5e1" font-size="12" font-weight="700">👥 5-Node Team Mesh</text>
+    </g>
+  </g>
+</svg>
